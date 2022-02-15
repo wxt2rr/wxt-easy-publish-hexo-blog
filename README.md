@@ -61,4 +61,8 @@ java -jar test.jar rp=D:\\my-project gn=wxt1471520488 bp=my-blog ip=images\\hexo
 
 ### 运行本项目
 
-### 
+## 代办
+* 支持全网图片资源替换(目前仅支持比较正规的网络链接替换)
+* 支持多文件并行操作
+* 支持md其它格式解析(目前仅支持图片)
+* 内置sh，目前window下需要使用Git运行sh脚本
