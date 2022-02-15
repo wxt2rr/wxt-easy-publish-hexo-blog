@@ -1,7 +1,8 @@
-package com.wangxt.easy.publish.hexo.blog.core;
+package com.wangxt.easy.publish.hexo.blog.replace;
 
 import com.wangxt.easy.publish.hexo.blog.pojo.MdType;
 import com.wangxt.easy.publish.hexo.blog.pojo.ParamEnum;
+import com.wangxt.easy.publish.hexo.blog.util.StreamUtil;
 import com.wangxt.easy.publish.hexo.blog.util.StringUtil;
 import org.springframework.util.FileCopyUtils;
 
@@ -26,7 +27,7 @@ public class Replacer {
         this.properties = properties;
     }
 
-    public void replace(List<String> list) throws Exception{
+    public List<String> replace(List<String> list) throws Exception{
         List<String> result = new ArrayList<>();
         for (String line : list) {
             if (line.contains(MdType.IMAGE.getName())) {
@@ -34,7 +35,9 @@ public class Replacer {
                 // 解析出来的图片源地址
                 String filePath = line.substring(i + MdType.IMAGE.getName().length() + 1, line.indexOf(")"));
                 // 图片后缀名
-                String mime = filePath.split("\\.")[1];
+                String[] filePathArray = filePath.split("\\.");
+                String mime = filePathArray[filePathArray.length - 1];
+                mime = checkMime(mime);
                 // 临时图片名称
                 String fileName = String.format("%s.%s", UUID.randomUUID(), mime);
                 // 图片本地存储路径
@@ -60,15 +63,15 @@ public class Replacer {
                 }
             }
             result.add(line);
-
-            System.out.println(line);
         }
+
+        return result;
     }
 
     private String generateUrl(String rootPath, String imagePath){
         String githubName = properties.getProperty(ParamEnum.GITHUB_NAME.getName());
-        // https://cdn.jsdelivr.net/gh/wxt1471520488/images@main/
-        return String.format("https://cdn.jsdelivr.net/gh/%s/%s@main/%s", githubName, rootPath, imagePath);
+        // https://cdn.jsdelivr.net/gh/wxt1471520488/images@main/hexo/e6ffa7ea-a5c3-40e6-bc2c-dcd09c774dae.png
+        return String.format("https://cdn.jsdelivr.net/gh/%s/%s@main/%s/%s", githubName, rootPath, properties.getProperty(ParamEnum.MD_FILE_NAME.getName()), imagePath).replaceAll("\\\\", "/");
     }
 
     private void copyFile(byte[] bytes, String newPath) throws Exception{
@@ -76,21 +79,14 @@ public class Replacer {
     }
 
     private void copyFile(InputStream is, String newPath) throws Exception{
-        FileCopyUtils.copy(inputStream2Byte(is), new File(newPath));
+        FileCopyUtils.copy(StreamUtil.inputStream2Byte(is), new File(newPath));
     }
 
     private boolean isWebSite(String str){
         return StringUtil.isNotBlank(str) && (str.startsWith("http") || str.startsWith("https"));
     }
 
-    public static byte[] inputStream2Byte(InputStream in) throws Exception {
-        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        byte[] data = new byte[1024];
-        int count;
-        while((count = in.read(data, 0, 1024)) != -1) {
-            outStream.write(data, 0, count);
-        }
-
-        return outStream.toByteArray();
+    private String checkMime(String mime){
+        return "png".equals(mime) || "jpg".equals(mime) || "jepg".equals(mime) || "gif".equals(mime) || "svg".equals(mime) ? mime : "png";
     }
 }

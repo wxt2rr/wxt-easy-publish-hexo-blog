@@ -1,10 +1,10 @@
 #!/bin/sh
 echo "begin"
 # shellcheck disable=SC2164
-cd D:\自己\images
+cd $1
 git pull
 git add .
-git commit -m "commit_message"
-git push origin main
+git commit -m $2
+git push origin $3
 
 echo "end"
