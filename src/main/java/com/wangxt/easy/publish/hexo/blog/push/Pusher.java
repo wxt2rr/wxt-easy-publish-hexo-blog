@@ -37,6 +37,22 @@ public class Pusher {
     }
 
     public static void main(String[] args) {
+        /*String str = "D:\\\\software\\\\Git\\\\bin\\\\sh.exe D:\\\\my-project\\\\wxt-easy-publish-hexo-blog\\\\src\\\\main\\\\resources\\\\sh\\\\push.sh D:\\\\my-project\\\\images wxtOfCommitImageForBlog main";
 
+        try {
+            String s = exeCommand(str);
+            System.out.println(s);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+
+        String[] command = {"D:\\\\software\\\\Git\\\\bin\\\\sh.exe",".\\src\\main\\resources\\sh\\push.sh"," D:\\自己\\images"," test"," main"};
+        String main = null;
+        try {
+            main = exeCommand(command);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(main);
     }
 }
