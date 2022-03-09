@@ -71,7 +71,8 @@ public class Replacer {
     private String generateUrl(String rootPath, String imagePath){
         String githubName = properties.getProperty(ParamEnum.GITHUB_NAME.getName());
         // https://cdn.jsdelivr.net/gh/wxt1471520488/images@main/hexo/e6ffa7ea-a5c3-40e6-bc2c-dcd09c774dae.png
-        return String.format("https://cdn.jsdelivr.net/gh/%s/%s@main/%s/%s", githubName, rootPath, properties.getProperty(ParamEnum.MD_FILE_NAME.getName()), imagePath).replaceAll("\\\\", "/");
+        String[] split = rootPath.split("\\\\");
+        return String.format("https://cdn.jsdelivr.net/gh/%s/%s@main/%s/%s/%s", githubName, split[0], split[1], properties.getProperty(ParamEnum.MD_FILE_NAME.getName()), imagePath).replaceAll("\\\\", "/");
     }
 
     private void copyFile(byte[] bytes, String newPath) throws Exception{

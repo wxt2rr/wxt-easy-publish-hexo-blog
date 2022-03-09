@@ -18,7 +18,12 @@ public class Pusher {
     }
 
     public void push(String path, String msg) throws Exception{
-        String[] command = {String.format("%s %s\\src\\main\\resources\\sh\\push.sh %s %s %s", properties.getProperty(ParamEnum.GIT_PATH.getName()), System.getProperty("user.dir"), path, msg, "main")};
+        //String[] command = {String.format("%s %s\\src\\main\\resources\\sh\\push.sh %s %s %s", properties.getProperty(ParamEnum.GIT_PATH.getName()), System.getProperty("user.dir"), path, msg, "main")};
+
+        String gitPath = properties.getProperty(ParamEnum.GIT_PATH.getName());
+        String shPath = ".\\src\\main\\resources\\sh\\push.sh";
+
+        String[] command = {gitPath, shPath," "+path," "+msg," main"};
         String main = exeCommand(command);
         System.out.println(main);
     }
@@ -46,13 +51,13 @@ public class Pusher {
             e.printStackTrace();
         }*/
 
-        String[] command = {"D:\\\\software\\\\Git\\\\bin\\\\sh.exe",".\\src\\main\\resources\\sh\\push.sh"," D:\\自己\\images"," test"," main"};
-        String main = null;
+
+        /*String main = null;
         try {
             main = exeCommand(command);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(main);
+        System.out.println(main);*/
     }
 }
