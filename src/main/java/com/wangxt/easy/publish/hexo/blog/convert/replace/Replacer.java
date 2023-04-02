@@ -1,4 +1,4 @@
-package com.wangxt.easy.publish.hexo.blog.replace;
+package com.wangxt.easy.publish.hexo.blog.convert.replace;
 
 import com.wangxt.easy.publish.hexo.blog.pojo.MdType;
 import com.wangxt.easy.publish.hexo.blog.pojo.ParamEnum;
